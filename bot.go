@@ -7,31 +7,14 @@ import (
 	"os/signal"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/goarg"
 )
 
 func main() {
 	fmt.Println("NavyCord - Discord Bot")
+	var cfg Config
+	readConfig(&cfg, "config.json")
 
-	argParser := goarg.NewParser()
-
-	tokenOption := goarg.NewOption("botToken", true,
-		goarg.NewStringMatcher(goarg.PrefixDoubleDash, "token", true),
-		goarg.NewStringMatcher(goarg.PrefixDash, "t", true),
-	)
-
-	argParser.AddOption(tokenOption)
-	err := argParser.Parse(os.Args)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	token, _ := argParser.Value("botToken")
-	guildId, _ := argParser.Value("guildId")
-
-	dcSession, err := discordgo.New(fmt.Sprintf("Bot %s", token))
+	dcSession, err := discordgo.New(fmt.Sprintf("Bot %s", cfg.Token))
 
 	if err != nil {
 		fmt.Println(err)
@@ -61,7 +44,7 @@ func main() {
 	log.Println("Press Ctrl+C to exit")
 	<-stop
 
-	err = dcSession.ApplicationCommandDelete(dcSession.State.User.ID, guildId, registeredHelloCommand.ID)
+	err = dcSession.ApplicationCommandDelete(dcSession.State.User.ID, "", registeredHelloCommand.ID)
 
 	if err != nil {
 		fmt.Println(err)
