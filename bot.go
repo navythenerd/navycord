@@ -15,17 +15,12 @@ func main() {
 
 	argParser := goarg.NewParser()
 
-	guildIdOption := goarg.NewOption("guildId", true,
-		goarg.NewStringMatcher(goarg.PrefixDoubleDash, "id", true),
-		goarg.NewStringMatcher(goarg.PrefixDash, "i", true),
-	)
-
 	tokenOption := goarg.NewOption("botToken", true,
 		goarg.NewStringMatcher(goarg.PrefixDoubleDash, "token", true),
 		goarg.NewStringMatcher(goarg.PrefixDash, "t", true),
 	)
 
-	argParser.AddOption(tokenOption, guildIdOption)
+	argParser.AddOption(tokenOption)
 	err := argParser.Parse(os.Args)
 
 	if err != nil {
@@ -54,7 +49,7 @@ func main() {
 
 	defer dcSession.Close()
 
-	registeredHelloCommand, err := dcSession.ApplicationCommandCreate(dcSession.State.User.ID, guildId, &helloCommand)
+	registeredHelloCommand, err := dcSession.ApplicationCommandCreate(dcSession.State.User.ID, "", &helloCommand)
 
 	if err != nil {
 		fmt.Println(err)
