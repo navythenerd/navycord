@@ -32,7 +32,7 @@ func main() {
 
 	defer dcSession.Close()
 
-	registeredHelloCommand, err := dcSession.ApplicationCommandCreate(dcSession.State.User.ID, "", &helloCommand)
+	registeredHelloCommand, err := dcSession.ApplicationCommandCreate(dcSession.State.User.ID, cfg.GuildId, &helloCommand)
 
 	if err != nil {
 		fmt.Println(err)
@@ -44,7 +44,7 @@ func main() {
 	log.Println("Press Ctrl+C to exit")
 	<-stop
 
-	err = dcSession.ApplicationCommandDelete(dcSession.State.User.ID, "", registeredHelloCommand.ID)
+	err = dcSession.ApplicationCommandDelete(dcSession.State.User.ID, cfg.GuildId, registeredHelloCommand.ID)
 
 	if err != nil {
 		fmt.Println(err)
