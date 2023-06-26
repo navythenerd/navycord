@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . /app/
 
-RUN go mod tidy && go build -o bot
+RUN go mod tidy && go build -o navycord
 
-CMD [ "./bot" ]
+CMD [ "./navycord" ]
