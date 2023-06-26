@@ -3,6 +3,7 @@ package bot
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -49,6 +50,10 @@ func (bot *Bot) startServer() {
 		Addr:    ":8000",
 		Handler: bot.router,
 	}
+
+	go func() {
+		log.Print(bot.server.ListenAndServe())
+	}()
 }
 
 func (bot *Bot) Shutdown() {
