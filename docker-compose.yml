@@ -4,20 +4,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8000:8000"
     depends_on:
       - db
   db:
     image: postgres
+    restart: always
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=navycord
       - POSTGRES_PASSWORD=WFPZbVhdDQAtazQc78Rj
       - POSTGRES_DB=navycord
-    volumes:
-      - postgres-data:/var/lib/postgressql/data
-
-volumes:
-  postgres-data:
