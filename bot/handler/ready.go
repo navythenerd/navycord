@@ -7,7 +7,7 @@ import (
 	"github.com/navythenerd/navycord/bot/discord"
 )
 
-func DiscordConnect(statusChannelId string) discord.Handler {
+func DiscordReady(statusChannelId string) discord.Handler {
 	return func(s *discordgo.Session, r *discordgo.Ready) {
 		_, err := s.ChannelMessageSend(statusChannelId, "Ready to serve!")
 
