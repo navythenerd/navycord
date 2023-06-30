@@ -48,7 +48,6 @@ func New(cfg *Config) (*Bot, error) {
 	// setup local web service
 	service := web.New(&cfg.Web)
 	bot.web = service
-
 	bot.registerWebHandler()
 
 	service.Start()
