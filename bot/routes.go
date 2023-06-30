@@ -1,5 +1,5 @@
 package bot
 
-func (bot *Bot) initRoutes() {
-	bot.router.Get("/invite", NoCache(bot.inviteHandler()))
+func (bot *Bot) registerWebHandler() {
+
 }

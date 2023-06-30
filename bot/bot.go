@@ -1,65 +1,66 @@
 package bot
 
 import (
-	"context"
-	"fmt"
 	"log"
-	"net/http"
-	"time"
 
-	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/lionrouter"
+	"github.com/navythenerd/navycord/bot/discord"
+	"github.com/navythenerd/navycord/bot/storage"
+	"github.com/navythenerd/navycord/bot/web"
 )
 
 type Bot struct {
-	router  *lionrouter.Router
-	session *discordgo.Session
-	server  *http.Server
 	config  *Config
+	discord *discord.Discord
+	web     *web.Service
+	storage *storage.Storage
 }
 
 func New(cfg *Config) (*Bot, error) {
 	bot := &Bot{
-		router: lionrouter.New(),
 		config: cfg,
 	}
 
-	session, err := discordgo.New(fmt.Sprintf("Bot %s", bot.config.Token))
+	// setup storage
+	storage, err := storage.New(&cfg.Storage)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	bot.storage = storage
+
+	// setup discord connection
+	discord, err := discord.New(&cfg.Discord)
 
 	if err != nil {
 		return nil, err
 	}
 
-	bot.session = session
-	session.Identify.Intents = discordgo.IntentsAll
+	bot.discord = discord
+	bot.registerDiscordHandler()
 
-	err = session.Open()
+	err = discord.Connect()
 
 	if err != nil {
 		return nil, err
 	}
 
-	bot.initRoutes()
-	bot.startServer()
+	// setup local web service
+	service := web.New(&cfg.Web)
+	bot.web = service
 
+	bot.registerWebHandler()
+
+	service.Start()
+
+	// return bot instance
 	return bot, nil
 }
 
-func (bot *Bot) startServer() {
-	bot.server = &http.Server{
-		Addr:    ":8000",
-		Handler: bot.router,
-	}
+func (b *Bot) Shutdown() {
+	_, err := b.discord.Session().ChannelMessageSend("1124026687080902726", "I'm going down!")
+	log.Println(err)
 
-	go func() {
-		log.Print(bot.server.ListenAndServe())
-	}()
-}
-
-func (bot *Bot) Shutdown() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	bot.server.Shutdown(ctx)
-	bot.session.Close()
+	b.web.Shutdown()
+	b.discord.Shutdown()
 }
