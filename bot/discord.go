@@ -5,5 +5,5 @@ import (
 )
 
 func (bot *Bot) registerDiscordHandler() {
-	bot.discord.Session().AddHandlerOnce(handler.DiscordConnect("1124026687080902726"))
+	bot.discord.Session().AddHandlerOnce(handler.DiscordReady("1124026687080902726"))
 }
