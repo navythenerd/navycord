@@ -3,7 +3,7 @@ package storage
 import "time"
 
 type Message struct {
-	ID         uint
+	ID         string `gorm:"primaryKey"`
 	User       string
 	Content    string
 	Annotation string

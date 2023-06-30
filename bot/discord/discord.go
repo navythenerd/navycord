@@ -6,12 +6,12 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type Discord struct {
+type Service struct {
 	session *discordgo.Session
 	config  *Config
 }
 
-func New(cfg *Config) (*Discord, error) {
+func New(cfg *Config) (*Service, error) {
 	// create discord session
 	connectString := fmt.Sprintf("Bot %s", cfg.Token)
 	s, err := discordgo.New(connectString)
@@ -23,7 +23,7 @@ func New(cfg *Config) (*Discord, error) {
 	// set all intents so we can do any action
 	s.Identify.Intents = discordgo.IntentsAll
 
-	d := &Discord{
+	d := &Service{
 		session: s,
 		config:  cfg,
 	}
@@ -31,16 +31,16 @@ func New(cfg *Config) (*Discord, error) {
 	return d, err
 }
 
-func (d *Discord) Connect() error {
-	return d.session.Open()
+func (s *Service) Connect() error {
+	return s.session.Open()
 }
 
-func (d *Discord) Shutdown() {
-	if d.session != nil {
-		d.session.Close()
+func (s *Service) Shutdown() {
+	if s.session != nil {
+		s.session.Close()
 	}
 }
 
-func (d *Discord) Session() *discordgo.Session {
-	return d.session
+func (s *Service) Session() *discordgo.Session {
+	return s.session
 }

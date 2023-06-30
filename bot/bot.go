@@ -9,10 +9,10 @@ import (
 )
 
 type Bot struct {
-	config  *Config
-	discord *discord.Discord
-	web     *web.Service
-	storage *storage.Storage
+	config         *Config
+	discordService *discord.Service
+	webService     *web.Service
+	storageService *storage.Service
 }
 
 func New(cfg *Config) (*Bot, error) {
@@ -21,45 +21,45 @@ func New(cfg *Config) (*Bot, error) {
 	}
 
 	// setup storage
-	storage, err := storage.New(&cfg.Storage)
+	storageService, err := storage.New(&cfg.Storage)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	bot.storage = storage
+	bot.storageService = storageService
 
 	// setup discord connection
-	discord, err := discord.New(&cfg.Discord)
+	discordService, err := discord.New(&cfg.Discord)
 
 	if err != nil {
 		return nil, err
 	}
 
-	bot.discord = discord
+	bot.discordService = discordService
 	bot.registerDiscordHandler()
 
-	err = discord.Connect()
+	err = discordService.Connect()
 
 	if err != nil {
 		return nil, err
 	}
 
 	// setup local web service
-	service := web.New(&cfg.Web)
-	bot.web = service
+	webService := web.New(&cfg.Web)
+	bot.webService = webService
 	bot.registerWebHandler()
 
-	service.Start()
+	webService.Start()
 
 	// return bot instance
 	return bot, nil
 }
 
 func (b *Bot) Shutdown() {
-	_, err := b.discord.Session().ChannelMessageSend("1124026687080902726", "I'm going down!")
+	_, err := b.discordService.Session().ChannelMessageSend("1124026687080902726", "I'm going down!")
 	log.Println(err)
 
-	b.web.Shutdown()
-	b.discord.Shutdown()
+	b.webService.Shutdown()
+	b.discordService.Shutdown()
 }
