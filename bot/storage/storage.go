@@ -35,3 +35,7 @@ func New(cfg *Config) (*Storage, error) {
 
 	return storage, nil
 }
+
+func (s *Storage) DB() *gorm.DB {
+	return s.db
+}
