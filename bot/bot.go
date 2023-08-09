@@ -65,4 +65,5 @@ func (b *Bot) Shutdown() {
 	b.unregisterCommands()
 	b.webService.Shutdown()
 	b.discordService.Shutdown()
+	b.storageService.Shutdown()
 }

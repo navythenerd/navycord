@@ -41,3 +41,5 @@ func New(cfg *Config) (*Service, error) {
 func (s *Service) DB() *gorm.DB {
 	return s.db
 }
+
+func (s *Service) Shutdown() {}
