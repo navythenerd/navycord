@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -11,7 +10,7 @@ import (
 )
 
 func main() {
-	fmt.Println("NavyCord - Discord Bot")
+	log.Println("Starting NavyCord")
 	var cfg bot.Config
 	bot.ReadConfig(&cfg, "config.json")
 
@@ -26,6 +25,5 @@ func main() {
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
-	log.Println("Press Ctrl+C to exit")
 	<-stop
 }
