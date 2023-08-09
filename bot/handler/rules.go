@@ -34,12 +34,21 @@ func DiscordRules(storageService *storage.Service, rules string, channel string)
 			}
 
 		} else {
+			// try to edit existing message
 			m, err = discordSession.ChannelMessageEdit(channel, rulesMessages[0].ID, string(mdRules))
 
 			if err != nil {
 				log.Println(err)
-				return
+
+				// message doesn't exist anymore try to create a new rules message
+				m, err = discordSession.ChannelMessageSend(channel, string(mdRules))
+
+				if err != nil {
+					log.Println(err)
+					return
+				}
 			}
+
 		}
 
 		ruleMessage := storage.Message{

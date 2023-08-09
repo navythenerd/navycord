@@ -45,6 +45,9 @@ func New(cfg *Config) (*Bot, error) {
 		return nil, err
 	}
 
+	// setup commands
+	bot.registerCommands()
+
 	// setup local web service
 	webService := web.New(&cfg.Web)
 	bot.webService = webService
@@ -57,9 +60,10 @@ func New(cfg *Config) (*Bot, error) {
 }
 
 func (b *Bot) Shutdown() {
-	_, err := b.discordService.Session().ChannelMessageSend("1124026687080902726", "I'm going down!")
+	_, err := b.discordService.Session().ChannelMessageSend(b.config.Discord.LogChannelId, "I'm going down!")
 	log.Println(err)
 
+	b.unregisterCommands()
 	b.webService.Shutdown()
 	b.discordService.Shutdown()
 }
