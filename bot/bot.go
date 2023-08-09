@@ -52,7 +52,6 @@ func New(cfg *Config) (*Bot, error) {
 	webService := web.New(&cfg.Web)
 	bot.webService = webService
 	bot.registerWebHandler()
-
 	webService.Start()
 
 	// return bot instance

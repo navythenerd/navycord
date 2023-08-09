@@ -8,19 +8,18 @@ import (
 )
 
 func (b *Bot) registerCommands() {
-	log.Println("Registering commands...")
+	log.Println("Registering commands")
 	cmd, err := b.discordService.Session().ApplicationCommandCreate(b.discordService.Session().State.User.ID, "", commands.Ping)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println(cmd.Name + " registered")
-
 	b.storageService.AddApplicationCommand(cmd, handler.Ping(), "")
 }
 
 func (b *Bot) unregisterCommands() {
+	log.Println("Deleting commands")
 	commandStorage := b.storageService.GetApplicationCommands()
 
 	for _, cmd := range commandStorage {

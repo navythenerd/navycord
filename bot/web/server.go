@@ -33,7 +33,9 @@ func New(cfg *Config) *Service {
 }
 
 func (s *Service) Start() {
+	log.Println("Starting web service")
 	go func() {
+		log.Printf("Listening on %s:%d", s.config.Address, s.config.Port)
 		log.Print(s.server.ListenAndServe())
 	}()
 }
