@@ -7,6 +7,7 @@ In the current state the main configuration of this bot is done through `config.
 
 ### config.json
 
+```
 {
     "discord": {
         "appId": "123456789",
@@ -34,3 +35,4 @@ In the current state the main configuration of this bot is done through `config.
         "port": 8000
     }
 }
+```
