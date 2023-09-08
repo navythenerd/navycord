@@ -9,7 +9,7 @@ import (
 	"github.com/navythenerd/navycord/bot/storage"
 )
 
-func DiscordRules(storageService *storage.Service, rules string, channel string) discord.Handler {
+func DiscordRules(storageService *storage.Service, rules string, channel string, agreeRulesEmoteReaction string, verifiedRole string) discord.Handler {
 	return func(discordSession *discordgo.Session, r *discordgo.Ready) {
 		query := storageService.DB().Model(&storage.Message{})
 		query = query.Where("annotation = ?", "rules").Limit(1)
@@ -34,10 +34,12 @@ func DiscordRules(storageService *storage.Service, rules string, channel string)
 			}
 
 		} else {
+			msg := rulesMessages[0]
 			// try to edit existing message
-			m, err = discordSession.ChannelMessageEdit(channel, rulesMessages[0].ID, string(mdRules))
+			m, err = discordSession.ChannelMessageEdit(channel, msg.ID, string(mdRules))
 
 			if err != nil {
+				storageService.DB().Delete(msg)
 				log.Println(err)
 
 				// message doesn't exist anymore try to create a new rules message
@@ -48,7 +50,6 @@ func DiscordRules(storageService *storage.Service, rules string, channel string)
 					return
 				}
 			}
-
 		}
 
 		ruleMessage := storage.Message{
@@ -58,6 +59,22 @@ func DiscordRules(storageService *storage.Service, rules string, channel string)
 			Annotation: "rules",
 		}
 
+		discordSession.AddHandler(AgreeRulesReaction(m.ID, agreeRulesEmoteReaction, verifiedRole))
+
 		storageService.DB().Save(&ruleMessage)
+	}
+}
+
+func AgreeRulesReaction(rulesMessageId string, agreeRulesEmoteReaction string, verfiedRoleId string) interface{} {
+	return func(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
+		if m.MessageID == rulesMessageId && m.Emoji.Name == agreeRulesEmoteReaction {
+			err := s.GuildMemberRoleAdd(m.GuildID, m.UserID, verfiedRoleId)
+
+			log.Printf("Adding verified role for user %s (with reason: accepted rules)\n", m.UserID)
+
+			if err != nil {
+				log.Print(err)
+			}
+		}
 	}
 }

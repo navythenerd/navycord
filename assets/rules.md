@@ -1,17 +1,3 @@
-# Some simple rules
+# Server Rules
 
-Lore ipsum dolor
-
-## Don't touch me!
-
-Hello there
-
- - A
- - B
- - C
-
-```
-Code
-```
-
-**Rules are subject to change**
+Here some rules
