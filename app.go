@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/navythenerd/navycord/bot"
+	"github.com/navythenerd/nerdguardian/bot"
 )
 
 func main() {

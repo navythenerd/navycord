@@ -3,7 +3,7 @@ package bot
 import (
 	"log"
 
-	"github.com/navythenerd/navycord/bot/handler"
+	"github.com/navythenerd/nerdguardian/bot/handler"
 )
 
 func (bot *Bot) registerWebHandler() {

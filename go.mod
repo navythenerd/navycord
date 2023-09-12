@@ -1,4 +1,4 @@
-module github.com/navythenerd/navycord
+module github.com/navythenerd/nerdguardian
 
 go 1.20
 
