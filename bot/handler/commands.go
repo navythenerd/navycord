@@ -2,8 +2,8 @@ package handler
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/navycord/bot/discord"
-	"github.com/navythenerd/navycord/bot/storage"
+	"github.com/navythenerd/nerdguardian/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/storage"
 )
 
 func Command(storage *storage.Service) discord.Handler {

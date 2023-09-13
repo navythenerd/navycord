@@ -2,7 +2,7 @@ package storage
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/navycord/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/discord"
 )
 
 type ApplicationCommand struct {

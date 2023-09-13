@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/navycord/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/discord"
 )
 
 func Ping() discord.Handler {

@@ -1,12 +1,12 @@
 module github.com/navythenerd/nerdguardian
 
-go 1.20
+go 1.21.1
 
 require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/navythenerd/lionrouter v0.0.0-20200911154837-f4429b46683b
 	gorm.io/driver/postgres v1.5.2
-	gorm.io/gorm v1.25.1
+	gorm.io/gorm v1.25.4
 )
 
 require (

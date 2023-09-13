@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/navythenerd/navycord/bot/discord"
-	"github.com/navythenerd/navycord/bot/storage"
-	"github.com/navythenerd/navycord/bot/web"
+	"github.com/navythenerd/nerdguardian/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/storage"
+	"github.com/navythenerd/nerdguardian/bot/web"
 )
 
 type Config struct {

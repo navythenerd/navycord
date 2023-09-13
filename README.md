@@ -1,5 +1,6 @@
-# NavyCord
-This is just another Discord Bot. I use this Bot for my personal Discord Server for fun and testing purposes.
+# NerdGuardian
+This is a general purpose bot for streamers. This bot combines twitch, discord and web facilities in one monolithic bot application.
+The bot is geared towards advanced users who are willing to host their own bot. This repository also builds a good foundation to build your own custom bot application.
 
 ## Configuration
 
@@ -24,9 +25,9 @@ In the current state the main configuration of this bot is done through `config.
     "storage": {
         "host": "db",
         "port": 5432,
-        "dbname": "navycord",
-        "user": "navycord",
-        "password": "WFPZbVhdDQAtazQc78Rj"
+        "dbname": "nerdguardian",
+        "user": "nerdguardian",
+        "password": "somePassword"
     },
     "web": {
         "inviteService": true,

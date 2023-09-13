@@ -1,7 +1,7 @@
 package bot
 
 import (
-	"github.com/navythenerd/navycord/bot/handler"
+	"github.com/navythenerd/nerdguardian/bot/handler"
 )
 
 func (b *Bot) registerDiscordHandler() {

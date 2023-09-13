@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/navycord/bot/discord"
-	"github.com/navythenerd/navycord/bot/storage"
+	"github.com/navythenerd/nerdguardian/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/storage"
 )
 
 func DiscordRules(storageService *storage.Service, rules string, channel string, agreeRulesEmoteReaction string, verifiedRole string) discord.Handler {

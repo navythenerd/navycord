@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	log.Println("Starting NavyCord")
+	log.Println("Starting NerdGuardian")
 	var cfg bot.Config
 	bot.ReadConfig(&cfg, "config.json")
 

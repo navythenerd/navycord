@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/navythenerd/navycord/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/discord"
 )
 
 func DiscordReady(statusChannelId string) discord.Handler {
