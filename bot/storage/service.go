@@ -8,9 +8,8 @@ import (
 )
 
 type Service struct {
-	db       *gorm.DB
-	commands map[string]*ApplicationCommand
-	config   *Config
+	db     *gorm.DB
+	config *Config
 }
 
 func New(cfg *Config) (*Service, error) {
@@ -30,9 +29,8 @@ func New(cfg *Config) (*Service, error) {
 	}
 
 	s := &Service{
-		db:       db,
-		commands: map[string]*ApplicationCommand{},
-		config:   cfg,
+		db:     db,
+		config: cfg,
 	}
 
 	return s, nil

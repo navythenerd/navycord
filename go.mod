@@ -4,6 +4,7 @@ go 1.21.1
 
 require (
 	github.com/bwmarrin/discordgo v0.27.1
+	github.com/gempir/go-twitch-irc/v4 v4.0.0
 	github.com/navythenerd/lionrouter v0.0.0-20200911154837-f4429b46683b
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.4

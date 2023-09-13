@@ -12,3 +12,7 @@ type Config struct {
 	RulesChannelId          string `json:"rulesChannelId"`
 	AgreeRulesEmoteReaction string `json:"agreeRulesEmoteReaction"`
 }
+
+func (s *Service) Config() *Config {
+	return s.config
+}

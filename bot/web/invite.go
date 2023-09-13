@@ -1,4 +1,4 @@
-package handler
+package web
 
 import (
 	"fmt"
@@ -8,9 +8,9 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func Invite(session *discordgo.Session, channelId string) http.Handler {
+func (s *Service) inviteHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		invite, err := session.ChannelInviteCreate(channelId, discordgo.Invite{
+		invite, err := s.discordService.Session().ChannelInviteCreate(s.discordService.Config().InviteChannelId, discordgo.Invite{
 			MaxAge:  600,
 			MaxUses: 1,
 		})
