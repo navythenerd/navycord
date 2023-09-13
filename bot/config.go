@@ -6,11 +6,13 @@ import (
 
 	"github.com/navythenerd/nerdguardian/bot/discord"
 	"github.com/navythenerd/nerdguardian/bot/storage"
+	"github.com/navythenerd/nerdguardian/bot/twitch"
 	"github.com/navythenerd/nerdguardian/bot/web"
 )
 
 type Config struct {
 	Discord discord.Config `json:"discord"`
+	Twitch  twitch.Config  `json:"twitch"`
 	Storage storage.Config `json:"storage"`
 	Web     web.Config     `json:"web"`
 }
