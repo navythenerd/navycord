@@ -17,6 +17,14 @@ func (s *ChatService) defaultCommandHandler(response string, permissionLevel uin
 	}
 }
 
+func (s *ChatService) reloadCommandsHandler(message twitch.PrivateMessage) {
+	if hasPermission(getPermissionMask(message.User.Badges), permissionBroadcaster) {
+		log.Println("Reloading commands")
+		s.commands = make(map[string]commandHandler)
+		s.registerCommands()
+	}
+}
+
 func (s *ChatService) discordInviteHandler(message twitch.PrivateMessage) {
 	invite, err := s.discordService.Session().ChannelInviteCreate(s.discordService.Config().InviteChannelId, discordgo.Invite{
 		MaxAge:  600,

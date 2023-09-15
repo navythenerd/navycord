@@ -34,8 +34,10 @@ var (
 	errorAliasAlreadyExists   = errors.New("alias already exists")
 )
 
-func (s *ChatService) loadCommands(file string) error {
-	rawFile, err := os.ReadFile(file)
+func (s *ChatService) loadCommands() error {
+	log.Printf("Loading command file: %s\n", s.config.Commands)
+
+	rawFile, err := os.ReadFile(s.config.Commands)
 
 	if err != nil {
 		return err
@@ -70,10 +72,13 @@ func (s *ChatService) loadCommands(file string) error {
 }
 
 func (s *ChatService) registerCommands() {
+	log.Println("Registering commands")
+
+	s.registerCommand("!reload", s.reloadCommandsHandler)
 	s.registerCommand("!dc", s.discordInviteHandler)
 	s.registerAlias("!discord", "!dc")
 
-	s.loadCommands("./assets/commands.json")
+	s.loadCommands()
 }
 
 func (s *ChatService) registerCommand(trigger string, handler commandHandler) error {

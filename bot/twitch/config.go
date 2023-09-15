@@ -6,4 +6,5 @@ type Config struct {
 	Channel     string `json:"channel"`
 	JoinMessage string `json:"joinMessage"`
 	PartMessage string `json:"partMessage"`
+	Commands    string `json:"commands"`
 }
