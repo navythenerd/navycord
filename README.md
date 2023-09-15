@@ -22,6 +22,9 @@ In the current state the main configuration of this bot is done through `config.
         "agreeRulesEmoteReaction": "✅",
         "rules": "./assets/rules.md"
     },
+    "twitch": {
+
+    }
     "storage": {
         "host": "db",
         "port": 5432,
@@ -37,3 +40,46 @@ In the current state the main configuration of this bot is done through `config.
     }
 }
 ```
+
+## Twitch Bot
+
+The Twitch bot implements a basic command system, which can be configured through the `commands.json` file. 
+
+### Default commands
+
+`!dc` or `!discord` is implemented as a default command and uses the `Discord` integration to create a valid invite link and send it in twitch chat.
+
+### commands.json
+
+```
+{
+    "commands": [
+        {
+            "trigger": "!ping",
+            "response": "pong",
+            "permissions": ["broadcaster"]
+        },
+        {
+            "trigger": "!link",
+            "response": "Here you can find a link: https://some.link",
+            "permissions": []
+        }
+    ],
+    "aliases": [
+        {
+            "alias": "!foo",
+            "trigger": "!link"
+        }
+    ]
+}
+```
+
+### Permissions
+
+The Twitch chat bot supports a basic permission system based upon the Twitch Badge system. Each higher permission inherits the permissions of the lower Badge. The permissions are given by the following badges in ascending order:
+
+ - no badge (everyone can execute command)
+ - subscriber (subscriber and higher can execute command)
+ - vip (vip and higher can execute command)
+ - moderator (moderator and broadcaster can execute command)
+ - broadcaster (only broadcaster can execute command)
