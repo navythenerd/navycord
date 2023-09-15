@@ -5,24 +5,36 @@ import (
 	"log"
 
 	ttvirc "github.com/gempir/go-twitch-irc/v4"
+	"github.com/navythenerd/nerdguardian/bot/discord"
+	"github.com/navythenerd/nerdguardian/bot/storage"
 )
 
 type ChatService struct {
-	irc    *ttvirc.Client
-	config *Config
+	irc            *ttvirc.Client
+	discordService *discord.Service
+	storageService *storage.Service
+	config         *Config
+	commands       map[string]commandHandler
 }
 
-func NewChatService(cfg *Config) *ChatService {
+func NewChatService(cfg *Config, discordService *discord.Service, storageService *storage.Service) *ChatService {
 	srv := &ChatService{
-		config: cfg,
+		config:         cfg,
+		discordService: discordService,
+		storageService: storageService,
+		commands:       make(map[string]commandHandler),
 	}
 
 	srv.irc = ttvirc.NewClient(cfg.User, fmt.Sprintf("oauth:%s", cfg.Token))
 
 	srv.irc.OnConnect(func() {
 		log.Printf("Twitch Bot joined channel: %s\n", cfg.Channel)
-		srv.irc.Say(cfg.Channel, "NerdGuardian joined!")
+		srv.irc.Say(cfg.Channel, cfg.JoinMessage)
 	})
+
+	srv.registerCommands()
+
+	srv.irc.OnPrivateMessage(srv.privateMessageHandler)
 
 	srv.irc.Join(cfg.Channel)
 
@@ -40,5 +52,12 @@ func (s *ChatService) Connect() {
 }
 
 func (s *ChatService) Shutdown() {
-	s.irc.Say(s.config.Channel, "NerdGuardian leaving!")
+	s.irc.Say(s.config.Channel, s.config.PartMessage)
+}
+
+func (s *ChatService) privateMessageHandler(message ttvirc.PrivateMessage) {
+	if message.Message[0] == '!' {
+		s.executeCommand(message)
+		return
+	}
 }
