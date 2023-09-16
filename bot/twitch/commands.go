@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/gempir/go-twitch-irc/v4"
 )
@@ -23,9 +24,15 @@ type alias struct {
 	Trigger string `json:"trigger"`
 }
 
+type timer struct {
+	Interval uint   `json:"interval"`
+	Response string `json:"response"`
+}
+
 type commands struct {
 	Commands []command `json:"commands"`
 	Aliases  []alias   `json:"aliases"`
+	Timers   []timer   `json:"timers"`
 }
 
 var (
@@ -68,6 +75,10 @@ func (s *ChatService) loadCommands() error {
 		}
 	}
 
+	for _, v := range commands.Timers {
+		s.registerTimer(v.Interval, v.Response)
+	}
+
 	return nil
 }
 
@@ -101,6 +112,15 @@ func (s *ChatService) registerAlias(alias string, trigger string) error {
 	}
 
 	return errorCommandDoesNotExist
+}
+
+func (s *ChatService) registerTimer(interval uint, response string) {
+	go func() {
+		for {
+			s.irc.Say(s.config.Channel, response)
+			time.Sleep(time.Second * time.Duration(interval))
+		}
+	}()
 }
 
 func (s *ChatService) executeCommand(message twitch.PrivateMessage) {
