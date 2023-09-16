@@ -70,6 +70,16 @@ The Twitch bot implements a basic command system, which can be configured throug
             "alias": "!foo",
             "trigger": "!link"
         }
+    ],
+    "timers": [
+        {
+            "interval": 10,
+            "response": "Bar"
+        },
+        {
+            "interval": 20,
+            "response": "Foo"
+        }
     ]
 }
 ```
