@@ -10,7 +10,7 @@ import (
 
 func (s *ChatService) defaultCommandHandler(response string, permissionLevel uint) commandHandler {
 	return func(message twitch.PrivateMessage) {
-		if hasPermission(getPermissionMask(message.User.Badges), permissionLevel) {
+		if hasPermissions(getPermissionsMask(message.User.Badges), permissionLevel) {
 			s.irc.Say(s.config.Channel, response)
 			return
 		}
@@ -18,7 +18,7 @@ func (s *ChatService) defaultCommandHandler(response string, permissionLevel uin
 }
 
 func (s *ChatService) reloadCommandsHandler(message twitch.PrivateMessage) {
-	if hasPermission(getPermissionMask(message.User.Badges), permissionBroadcaster) {
+	if hasPermissions(getPermissionsMask(message.User.Badges), permissionBroadcaster) {
 		log.Println("Reloading commands")
 		s.commands = make(map[string]commandHandler)
 		s.registerCommands()

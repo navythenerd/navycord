@@ -61,8 +61,8 @@ func (s *ChatService) loadCommands() error {
 	}
 
 	for _, v := range commands.Commands {
-		permissionsMap := toPermissionMap(v.Permissions)
-		err := s.registerCommand(v.Trigger, s.defaultCommandHandler(v.Response, getPermissionMask(permissionsMap)))
+		permissionsMap := toPermissionsMap(v.Permissions)
+		err := s.registerCommand(v.Trigger, s.defaultCommandHandler(v.Response, getPermissionsMask(permissionsMap)))
 
 		if err != nil {
 			log.Printf("Error registering command '%s': %s", v.Trigger, err.Error())
