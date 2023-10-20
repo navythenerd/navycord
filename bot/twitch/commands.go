@@ -25,6 +25,7 @@ type alias struct {
 }
 
 type timer struct {
+	Name     string `json:"name"`
 	Interval uint   `json:"interval"`
 	Response string `json:"response"`
 }
@@ -39,6 +40,7 @@ var (
 	errorCommandAlreadyExists = errors.New("command already exists")
 	errorCommandDoesNotExist  = errors.New("command does not exist")
 	errorAliasAlreadyExists   = errors.New("alias already exists")
+	errorTimerAlreadyExists   = errors.New("timer already exists")
 )
 
 func (s *ChatService) loadCommands() error {
@@ -76,7 +78,11 @@ func (s *ChatService) loadCommands() error {
 	}
 
 	for _, v := range commands.Timers {
-		s.registerTimer(v.Interval, v.Response)
+		err = s.registerTimer(v.Name, v.Interval, v.Response)
+
+		if err != nil {
+			log.Printf("Error registering timer '%s': %s", v.Name, err.Error())
+		}
 	}
 
 	return nil
@@ -114,13 +120,19 @@ func (s *ChatService) registerAlias(alias string, trigger string) error {
 	return errorCommandDoesNotExist
 }
 
-func (s *ChatService) registerTimer(interval uint, response string) {
-	go func() {
-		for {
-			s.irc.Say(s.config.Channel, response)
-			time.Sleep(time.Second * time.Duration(interval))
-		}
-	}()
+func (s *ChatService) registerTimer(name string, interval uint, response string) error {
+	if _, ok := s.commands[name]; ok {
+		return errorTimerAlreadyExists
+	}
+
+	timer := newIntervalTimer(time.Duration(interval), func() {
+		s.irc.Say(s.config.Channel, response)
+	})
+
+	s.timers[name] = timer
+	timer.start()
+
+	return nil
 }
 
 func (s *ChatService) executeCommand(message twitch.PrivateMessage) {

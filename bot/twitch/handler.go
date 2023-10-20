@@ -27,8 +27,8 @@ func (s *ChatService) reloadCommandsHandler(message twitch.PrivateMessage) {
 
 func (s *ChatService) discordInviteHandler(message twitch.PrivateMessage) {
 	invite, err := s.discordService.Session().ChannelInviteCreate(s.discordService.Config().InviteChannelId, discordgo.Invite{
-		MaxAge:  600,
-		MaxUses: 0,
+		MaxAge:  int(s.config.DiscordInviteMaxAge),
+		MaxUses: int(s.config.DiscordInviteMaxUses),
 	})
 
 	if err != nil {

@@ -15,6 +15,7 @@ type ChatService struct {
 	storageService *storage.Service
 	config         *Config
 	commands       map[string]commandHandler
+	timers         map[string]*intervalTimer
 }
 
 func NewChatService(cfg *Config, discordService *discord.Service, storageService *storage.Service) *ChatService {
@@ -23,6 +24,7 @@ func NewChatService(cfg *Config, discordService *discord.Service, storageService
 		discordService: discordService,
 		storageService: storageService,
 		commands:       make(map[string]commandHandler),
+		timers:         make(map[string]*intervalTimer),
 	}
 
 	srv.irc = ttvirc.NewClient(cfg.User, fmt.Sprintf("oauth:%s", cfg.Token))
@@ -52,6 +54,10 @@ func (s *ChatService) Connect() {
 }
 
 func (s *ChatService) Shutdown() {
+	for _, v := range s.timers {
+		v.stop()
+	}
+
 	s.irc.Say(s.config.Channel, s.config.PartMessage)
 }
 
