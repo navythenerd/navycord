@@ -8,7 +8,7 @@ const (
 	permissionBroadcaster uint = permissionModerator | (1 << 4)
 )
 
-func toPermissionMap(permissions []string) map[string]int {
+func toPermissionsMap(permissions []string) map[string]int {
 	permissionMap := make(map[string]int)
 
 	for _, v := range permissions {
@@ -18,7 +18,7 @@ func toPermissionMap(permissions []string) map[string]int {
 	return permissionMap
 }
 
-func getPermissionMask(badges map[string]int) uint {
+func getPermissionsMask(badges map[string]int) uint {
 	permissions := permissionNoBadge
 
 	if badge, ok := badges["broadcaster"]; ok && badge == 1 {
@@ -40,6 +40,6 @@ func getPermissionMask(badges map[string]int) uint {
 	return permissions
 }
 
-func hasPermission(permissions uint, permissionLevel uint) bool {
+func hasPermissions(permissions uint, permissionLevel uint) bool {
 	return permissions&permissionLevel != 0
 }
