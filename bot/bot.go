@@ -47,11 +47,12 @@ func New(cfg *Config) (*Bot, error) {
 		return nil, err
 	}
 
-	// setup twitch chat connection
-	log.Println("Setting up twitch chat service")
-	bot.ttvChatService = twitch.NewChatService(&cfg.Twitch, discordService, storageService)
-
-	bot.ttvChatService.Connect()
+	// setup twitch chat integration
+	if cfg.Twitch.EnableChatIntegration {
+		log.Println("Setting up twitch chat service")
+		bot.ttvChatService = twitch.NewChatService(&cfg.Twitch, discordService, storageService)
+		bot.ttvChatService.Connect()
+	}
 
 	// setup local web service
 	log.Println("Setting up web service")

@@ -8,7 +8,6 @@ type Config struct {
 	InviteChannelId         string `json:"inviteChannelId"`
 	RulesMessageId          string `json:"rulesMessageId"`
 	VerifiedRoleId          string `json:"verifiedRoleId"`
-	RulesChannelId          string `json:"rulesChannelId"`
 	AgreeRulesEmoteReaction string `json:"agreeRulesEmoteReaction"`
 }
 
