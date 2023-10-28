@@ -9,23 +9,17 @@ import (
 	"time"
 
 	"github.com/navythenerd/lionrouter"
-	"github.com/navythenerd/nerdguardian/bot/discord"
-	"github.com/navythenerd/nerdguardian/bot/storage"
 )
 
 type Service struct {
-	config         *Config
-	server         *http.Server
-	router         *lionrouter.Router
-	discordService *discord.Service
-	storageService *storage.Service
+	config *Config
+	server *http.Server
+	router *lionrouter.Router
 }
 
-func New(cfg *Config, discordService *discord.Service, storageService *storage.Service) *Service {
+func New(cfg *Config) *Service {
 	s := &Service{
-		config:         cfg,
-		discordService: discordService,
-		storageService: storageService,
+		config: cfg,
 	}
 
 	s.router = lionrouter.New()
@@ -40,7 +34,6 @@ func New(cfg *Config, discordService *discord.Service, storageService *storage.S
 
 func (s *Service) Start() {
 	log.Println("Starting web service")
-	s.registerHandler()
 
 	go func() {
 		log.Printf("Listening on %s:%d", s.config.Address, s.config.Port)

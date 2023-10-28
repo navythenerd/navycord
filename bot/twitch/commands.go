@@ -92,8 +92,6 @@ func (s *ChatService) registerCommands() {
 	log.Println("Registering commands")
 
 	s.registerCommand("!reload", s.reloadCommandsHandler)
-	s.registerCommand("!dc", s.discordInviteHandler)
-	s.registerAlias("!discord", "!dc")
 
 	s.loadCommands()
 }

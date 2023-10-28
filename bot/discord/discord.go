@@ -5,16 +5,18 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/navythenerd/nerdguardian/bot/storage"
+	"github.com/navythenerd/nerdguardian/bot/web"
 )
 
 type Service struct {
 	session  *discordgo.Session
 	storage  *storage.Service
+	web      *web.Service
 	commands map[string]*ApplicationCommand
 	config   *Config
 }
 
-func New(cfg *Config, storage *storage.Service) (*Service, error) {
+func New(cfg *Config, storage *storage.Service, web *web.Service) (*Service, error) {
 	// create discord session
 	connectString := fmt.Sprintf("Bot %s", cfg.Token)
 	s, err := discordgo.New(connectString)
@@ -29,6 +31,7 @@ func New(cfg *Config, storage *storage.Service) (*Service, error) {
 	d := &Service{
 		session:  s,
 		storage:  storage,
+		web:      web,
 		commands: make(map[string]*ApplicationCommand),
 		config:   cfg,
 	}

@@ -31,9 +31,15 @@ func New(cfg *Config) (*Bot, error) {
 
 	bot.storageService = storageService
 
+	// setup local web service
+	log.Println("Setting up web service")
+	webService := web.New(&cfg.Web)
+	bot.webService = webService
+	webService.Start()
+
 	// setup discord connection
 	log.Println("Setting up discord service")
-	discordService, err := discord.New(&cfg.Discord, storageService)
+	discordService, err := discord.New(&cfg.Discord, storageService, webService)
 
 	if err != nil {
 		return nil, err
@@ -50,15 +56,9 @@ func New(cfg *Config) (*Bot, error) {
 	// setup twitch chat integration
 	if cfg.Twitch.EnableChatIntegration {
 		log.Println("Setting up twitch chat service")
-		bot.ttvChatService = twitch.NewChatService(&cfg.Twitch, discordService, storageService)
+		bot.ttvChatService = twitch.NewChatService(&cfg.Twitch, storageService, webService)
 		bot.ttvChatService.Connect()
 	}
-
-	// setup local web service
-	log.Println("Setting up web service")
-	webService := web.New(&cfg.Web, discordService, storageService)
-	bot.webService = webService
-	webService.Start()
 
 	// return bot instance
 	return bot, nil

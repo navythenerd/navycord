@@ -1,10 +1,8 @@
 package twitch
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/bwmarrin/discordgo"
 	"github.com/gempir/go-twitch-irc/v4"
 )
 
@@ -29,19 +27,4 @@ func (s *ChatService) reloadCommandsHandler(message twitch.PrivateMessage) {
 
 		s.registerCommands()
 	}
-}
-
-func (s *ChatService) discordInviteHandler(message twitch.PrivateMessage) {
-	invite, err := s.discordService.Session().ChannelInviteCreate(s.discordService.Config().InviteChannelId, discordgo.Invite{
-		MaxAge:  int(s.config.DiscordInviteMaxAge),
-		MaxUses: int(s.config.DiscordInviteMaxUses),
-	})
-
-	if err != nil {
-		log.Println(err)
-		s.irc.Say(s.config.Channel, "Error generating invite link")
-		return
-	}
-
-	s.irc.Say(s.config.Channel, fmt.Sprintf("https://discord.com/invite/%s", invite.Code))
 }

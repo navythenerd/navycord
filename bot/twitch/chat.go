@@ -5,26 +5,28 @@ import (
 	"log"
 
 	ttvirc "github.com/gempir/go-twitch-irc/v4"
-	"github.com/navythenerd/nerdguardian/bot/discord"
 	"github.com/navythenerd/nerdguardian/bot/storage"
+	"github.com/navythenerd/nerdguardian/bot/web"
+	"github.com/nicklaw5/helix/v2"
 )
 
 type ChatService struct {
-	irc            *ttvirc.Client
-	discordService *discord.Service
-	storageService *storage.Service
-	config         *Config
-	commands       map[string]commandHandler
-	timers         map[string]*intervalTimer
+	irc      *ttvirc.Client
+	helix    *helix.Client
+	storage  *storage.Service
+	web      *web.Service
+	config   *Config
+	commands map[string]commandHandler
+	timers   map[string]*intervalTimer
 }
 
-func NewChatService(cfg *Config, discordService *discord.Service, storageService *storage.Service) *ChatService {
+func NewChatService(cfg *Config, storage *storage.Service, web *web.Service) *ChatService {
 	srv := &ChatService{
-		config:         cfg,
-		discordService: discordService,
-		storageService: storageService,
-		commands:       make(map[string]commandHandler),
-		timers:         make(map[string]*intervalTimer),
+		config:   cfg,
+		storage:  storage,
+		web:      web,
+		commands: make(map[string]commandHandler),
+		timers:   make(map[string]*intervalTimer),
 	}
 
 	srv.irc = ttvirc.NewClient(cfg.User, fmt.Sprintf("oauth:%s", cfg.Token))

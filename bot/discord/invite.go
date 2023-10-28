@@ -1,4 +1,4 @@
-package web
+package discord
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 func (s *Service) inviteHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		invite, err := s.discordService.Session().ChannelInviteCreate(s.discordService.Config().InviteChannelId, discordgo.Invite{
+		invite, err := s.session.ChannelInviteCreate(s.config.InviteChannelId, discordgo.Invite{
 			MaxAge:  600,
 			MaxUses: 1,
 		})
