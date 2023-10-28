@@ -13,6 +13,7 @@ type ApplicationCommand struct {
 }
 
 func (s *Service) registerApplicationCommands() {
+	// ping command
 	cmd, err := s.Session().ApplicationCommandCreate(s.Session().State.User.ID, "", ping)
 
 	if err != nil {
@@ -44,7 +45,11 @@ func (s *Service) addApplicationCommand(command *discordgo.ApplicationCommand, h
 
 func (discord *Service) applicationCommandHandler() Handler {
 	return func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		handler := discord.commands[i.ApplicationCommandData().Name].Handler.(func(*discordgo.Session, *discordgo.InteractionCreate))
-		handler(s, i)
+		if handler := discord.commands[i.ApplicationCommandData().Name].Handler.(func(*discordgo.Session, *discordgo.InteractionCreate)); handler != nil {
+			handler(s, i)
+			return
+		}
+
+		log.Printf("No handler for command: %s", i.ApplicationCommandData().Name)
 	}
 }
